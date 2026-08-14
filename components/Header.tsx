@@ -1,9 +1,10 @@
 import Link from 'next/link'
-import { SearchIcon } from './icons'
+import type { SearchIndexEntry } from '@/lib/posts'
+import { SearchBox } from './SearchBox'
 
 const LOGO_URL = 'https://i.nostr.build/k3ieTQ2iG9sRpe6fdkXpB5.png'
 
-export function Header() {
+export function Header({ searchIndex }: { searchIndex: SearchIndexEntry[] }) {
   return (
     <header className="border-b border-gray-200">
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-5 py-5">
@@ -22,9 +23,7 @@ export function Header() {
         </nav>
 
         <div className="flex items-center gap-5">
-          <button aria-label="Search this site" className="text-ink/70 hover:text-ink">
-            <SearchIcon />
-          </button>
+          <SearchBox index={searchIndex} />
         </div>
       </div>
     </header>
