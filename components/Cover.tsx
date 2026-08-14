@@ -12,21 +12,6 @@ export function Cover() {
         <p className="max-w-xl text-lg text-ink/80">
           Welcome to The Bitcoin Brief, a Bitcoin newsletter published on Nostr.
         </p>
-
-        <div className="flex gap-3">
-          <a
-            href="#"
-            className="rounded-full bg-accent px-6 py-2.5 text-sm font-semibold text-white transition hover:opacity-90"
-          >
-            Subscribe now
-          </a>
-          <a
-            href="#"
-            className="rounded-full border border-gray-300 px-6 py-2.5 text-sm font-semibold text-ink transition hover:border-ink"
-          >
-            Login
-          </a>
-        </div>
       </div>
     </div>
   )

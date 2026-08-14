@@ -23,15 +23,6 @@ export function Header() {
           <button aria-label="Search this site" className="text-ink/70 hover:text-ink">
             <SearchIcon />
           </button>
-          <Link href="#" className="hidden text-sm font-semibold sm:inline">
-            Sign in
-          </Link>
-          <Link
-            href="#"
-            className="rounded-full bg-accent px-4 py-2 text-sm font-semibold text-white transition hover:opacity-90"
-          >
-            Subscribe
-          </Link>
         </div>
       </div>
     </header>
