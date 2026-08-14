@@ -1,13 +1,15 @@
 import Link from 'next/link'
-import { LogoMark, SearchIcon } from './icons'
+import { SearchIcon } from './icons'
+
+const LOGO_URL = 'https://i.nostr.build/k3ieTQ2iG9sRpe6fdkXpB5.png'
 
 export function Header() {
   return (
     <header className="border-b border-gray-200">
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-5 py-5">
-        <Link href="/" className="flex items-center gap-2 text-ink">
-          <LogoMark />
-          <span className="font-serif text-lg font-bold leading-none">The Bitcoin Brief</span>
+        <Link href="/" className="flex items-center">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={LOGO_URL} alt="The Bitcoin Brief" className="h-9 w-auto" />
         </Link>
 
         <nav className="hidden gap-8 text-sm font-semibold md:flex">
