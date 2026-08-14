@@ -14,6 +14,8 @@ const DEFAULT_RELAYS = [
   'wss://relay.primal.net',
 ]
 
+const DEFAULT_REQUIRED_TAG = 'blog'
+
 export type NostrPost = {
   id: string
   slug: string
@@ -32,6 +34,10 @@ function getRelays(): string[] {
     .split(',')
     .map((r) => r.trim())
     .filter(Boolean)
+}
+
+function getRequiredTag(): string {
+  return (process.env.NOSTR_BLOG_TAG || DEFAULT_REQUIRED_TAG).toLowerCase()
 }
 
 function getPubkeyHex(): string | null {
@@ -60,45 +66,50 @@ function slugify(title: string): string {
 
 /**
  * Fetches NIP-23 long-form posts (kind 30023) for the configured npub from
- * public relays. Events are verified against the claimed pubkey before use,
- * since a rogue relay could otherwise return forged content.
+ * public relays, filtered to those tagged with NOSTR_BLOG_TAG (default
+ * "blog"). Events are verified against the claimed pubkey before use, since
+ * a rogue relay could otherwise return forged content.
  */
 export async function fetchNostrPosts(): Promise<NostrPost[]> {
   const pubkey = getPubkeyHex()
   if (!pubkey) return []
 
   const relays = getRelays()
+  const requiredTag = getRequiredTag()
   const pool = new SimplePool()
 
   try {
     const events = await pool.querySync(
       relays,
-      { kinds: [LONG_FORM_KIND], authors: [pubkey] } as any,
+      { kinds: [LONG_FORM_KIND], authors: [pubkey], '#t': [requiredTag] } as any,
       { maxWait: 8000 } as any,
     )
 
     const verified = events.filter((evt: any) => evt.pubkey === pubkey && verifyEvent(evt))
 
-    const posts = verified.map((evt: any): NostrPost => {
-      const title = tagValue(evt.tags, 'title') || 'Untitled'
-      const summary = tagValue(evt.tags, 'summary') || ''
-      const image = tagValue(evt.tags, 'image')
-      const dTag = tagValue(evt.tags, 'd')
-      const publishedAtTag = tagValue(evt.tags, 'published_at')
-      const publishedAt = publishedAtTag ? parseInt(publishedAtTag, 10) : evt.created_at
-      const hashtags = evt.tags.filter((t: string[]) => t[0] === 't').map((t: string[]) => t[1])
+    const posts = verified
+      .map((evt: any): NostrPost => {
+        const title = tagValue(evt.tags, 'title') || 'Untitled'
+        const summary = tagValue(evt.tags, 'summary') || ''
+        const image = tagValue(evt.tags, 'image')
+        const dTag = tagValue(evt.tags, 'd')
+        const publishedAtTag = tagValue(evt.tags, 'published_at')
+        const publishedAt = publishedAtTag ? parseInt(publishedAtTag, 10) : evt.created_at
+        const hashtags = evt.tags.filter((t: string[]) => t[0] === 't').map((t: string[]) => t[1])
 
-      return {
-        id: evt.id,
-        slug: dTag || slugify(title),
-        title,
-        summary,
-        image,
-        publishedAt,
-        content: evt.content,
-        tags: hashtags,
-      }
-    })
+        return {
+          id: evt.id,
+          slug: dTag || slugify(title),
+          title,
+          summary,
+          image,
+          publishedAt,
+          content: evt.content,
+          tags: hashtags,
+        }
+      })
+      // Some relays ignore tag filters, so re-check client-side.
+      .filter((post) => post.tags.some((t) => t.toLowerCase() === requiredTag))
 
     // Long-form notes are parameterized-replaceable: keep only the latest
     // revision per slug.

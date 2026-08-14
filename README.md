@@ -8,8 +8,11 @@ CMS.
 
 Posts are long-form Nostr notes — [NIP-23](https://github.com/nostr-protocol/nips/blob/master/23.md),
 kind `30023`. At build time, [`lib/nostr.ts`](lib/nostr.ts) queries a set of
-public relays for every kind-`30023` event authored by `NOSTR_NPUB`, verifies
-each event's signature, and maps its tags onto the page:
+public relays for every kind-`30023` event authored by `NOSTR_NPUB` **and
+tagged with `#blog`** (configurable via `NOSTR_BLOG_TAG`), verifies each
+event's signature, and maps its tags onto the page. That means you can write
+long-form notes for other purposes under the same npub — only the ones you
+hashtag `#blog` when publishing show up here.
 
 | Nostr tag       | Used for              |
 | --------------- | ---------------------- |
@@ -33,7 +36,8 @@ any live content.
    time, not in the browser).
 
 Optionally set `NOSTR_RELAYS` (comma-separated relay URLs) to override the
-default relay set in `lib/nostr.ts`.
+default relay set, or `NOSTR_BLOG_TAG` to require a different hashtag than
+`blog`.
 
 ## Local development
 
