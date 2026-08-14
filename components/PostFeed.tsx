@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import type { NostrPost } from '@/lib/nostr'
+import { getFeaturedTag, isTaggedWith } from '@/lib/tags'
 import { StarIcon, ChevronIcon } from './icons'
 
 function monthAbbrev(ts: number) {
@@ -15,7 +16,9 @@ function readingTime(content: string) {
   return Math.max(1, Math.round(words / 200))
 }
 
-export function PostFeed({ posts, featuredId }: { posts: NostrPost[]; featuredId?: string }) {
+export function PostFeed({ posts }: { posts: NostrPost[] }) {
+  const featuredTag = getFeaturedTag()
+
   if (posts.length === 0) {
     return (
       <div className="mx-auto max-w-6xl px-5 py-16 text-center text-ink/50">
@@ -44,7 +47,7 @@ export function PostFeed({ posts, featuredId }: { posts: NostrPost[]; featuredId
               </h2>
 
               <div className="flex flex-none items-center gap-3 text-ink/40">
-                {post.id === featuredId && <StarIcon />}
+                {isTaggedWith(post.tags, featuredTag) && <StarIcon />}
                 <span className="hidden text-xs sm:inline">{readingTime(post.content)} min read</span>
                 <ChevronIcon className="transition group-hover:translate-x-0.5 group-hover:text-accent" />
               </div>

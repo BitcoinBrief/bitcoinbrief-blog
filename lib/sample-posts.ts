@@ -18,7 +18,7 @@ export const samplePosts: NostrPost[] = [
 Once the \`NOSTR_NPUB\` environment variable is set to your public key, the site rebuilds and replaces this content with your real long-form notes (kind \`30023\`) pulled from public Nostr relays.
 
 Nothing else about the layout changes — titles, images, and publish dates all come straight from your Nostr events.`,
-    tags: ['setup'],
+    tags: ['setup', 'featured'],
   },
   {
     id: 'sample-2',
@@ -31,7 +31,7 @@ Nothing else about the layout changes — titles, images, and publish dates all 
 Each event is checked against its signature before it's used, so a misbehaving relay can't inject content that didn't really come from your key.
 
 The \`d\`, \`title\`, \`summary\`, \`image\`, and \`published_at\` tags map directly onto this page's layout.`,
-    tags: ['nostr', 'nip-23'],
+    tags: ['nostr', 'nip-23', 'featured'],
   },
   {
     id: 'sample-3',

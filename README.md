@@ -27,6 +27,12 @@ Until `NOSTR_NPUB` is set, the site falls back to placeholder posts (see
 [`lib/sample-posts.ts`](lib/sample-posts.ts)) so the layout is visible without
 any live content.
 
+Within that `#blog`-tagged set, posts additionally hashtagged `#featured`
+(configurable via `NOSTR_FEATURED_TAG`) appear in the featured carousel at
+the top of the homepage, and get a star next to them in the main list. Tag
+as many or as few posts `#featured` as you want — the carousel just hides
+itself if none are tagged.
+
 ## Going live with your npub
 
 1. In the Vercel project settings, add an environment variable:
@@ -36,8 +42,9 @@ any live content.
    time, not in the browser).
 
 Optionally set `NOSTR_RELAYS` (comma-separated relay URLs) to override the
-default relay set, or `NOSTR_BLOG_TAG` to require a different hashtag than
-`blog`.
+default relay set, `NOSTR_BLOG_TAG` to require a different hashtag than
+`blog`, or `NOSTR_FEATURED_TAG` to use something other than `featured` for
+the carousel.
 
 ## Local development
 

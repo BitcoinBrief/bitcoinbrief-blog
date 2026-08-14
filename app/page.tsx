@@ -1,4 +1,5 @@
 import { getAllPosts } from '@/lib/posts'
+import { getFeaturedTag, isTaggedWith } from '@/lib/tags'
 import { Cover } from '@/components/Cover'
 import { FeaturedCarousel } from '@/components/FeaturedCarousel'
 import { PostFeed } from '@/components/PostFeed'
@@ -7,7 +8,8 @@ export const revalidate = 3600
 
 export default async function HomePage() {
   const { posts, isSample } = await getAllPosts()
-  const featured = posts.slice(0, 3)
+  const featuredTag = getFeaturedTag()
+  const featured = posts.filter((post) => isTaggedWith(post.tags, featuredTag))
 
   return (
     <>
@@ -23,7 +25,7 @@ export default async function HomePage() {
       )}
 
       <FeaturedCarousel posts={featured} />
-      <PostFeed posts={posts} featuredId={featured[0]?.id} />
+      <PostFeed posts={posts} />
     </>
   )
 }
