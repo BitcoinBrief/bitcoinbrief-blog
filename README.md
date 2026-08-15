@@ -23,9 +23,9 @@ hashtag `#blog` when publishing show up here.
 | `published_at`  | Date shown + sort order  |
 | content (body)  | Post body (Markdown)      |
 
-Until `NOSTR_NPUB` is set, the site falls back to placeholder posts (see
-[`lib/sample-posts.ts`](lib/sample-posts.ts)) so the layout is visible without
-any live content.
+If no posts are found (nothing tagged `#blog` yet, or `NOSTR_NPUB` unset),
+the homepage and feed show an empty "No posts yet." state rather than
+placeholder content.
 
 Within that `#blog`-tagged set, posts additionally hashtagged `#featured`
 (configurable via `NOSTR_FEATURED_TAG`) appear in the featured carousel at

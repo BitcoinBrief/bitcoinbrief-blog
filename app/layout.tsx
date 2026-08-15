@@ -27,7 +27,7 @@ export const metadata: Metadata = {
 export const revalidate = 3600
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
-  const { posts } = await getAllPosts()
+  const posts = await getAllPosts()
   const searchIndex = toSearchIndex(posts)
 
   return (

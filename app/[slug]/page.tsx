@@ -5,12 +5,12 @@ import { getAllPosts } from '@/lib/posts'
 export const revalidate = 3600
 
 export async function generateStaticParams() {
-  const { posts } = await getAllPosts()
+  const posts = await getAllPosts()
   return posts.map((post) => ({ slug: post.slug }))
 }
 
 export async function generateMetadata({ params }: { params: { slug: string } }) {
-  const { posts } = await getAllPosts()
+  const posts = await getAllPosts()
   const post = posts.find((p) => p.slug === params.slug)
   if (!post) return {}
   return {
@@ -20,7 +20,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
 }
 
 export default async function PostPage({ params }: { params: { slug: string } }) {
-  const { posts } = await getAllPosts()
+  const posts = await getAllPosts()
   const post = posts.find((p) => p.slug === params.slug)
   if (!post) return notFound()
 
