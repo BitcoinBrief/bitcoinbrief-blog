@@ -10,7 +10,8 @@ export function Cover() {
         </div>
 
         <p className="max-w-xl text-lg text-ink/80">
-          Welcome to The Bitcoin Brief, a Bitcoin newsletter published on Nostr.
+          Welcome to The Bitcoin Brief, a legal research newsletter analyzing Bitcoin’s
+          transformative potential for society.
         </p>
       </div>
     </div>

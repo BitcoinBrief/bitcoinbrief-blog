@@ -19,7 +19,8 @@ const mulish = Mulish({
 
 export const metadata: Metadata = {
   title: 'The Bitcoin Brief',
-  description: 'A Bitcoin newsletter, published on Nostr.',
+  description:
+    'A legal research newsletter analyzing Bitcoin’s transformative potential for society.',
 }
 
 // Default revalidate for routes (like /about) that don't set their own,
