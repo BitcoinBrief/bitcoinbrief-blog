@@ -1,14 +1,10 @@
 import Link from 'next/link'
 import type { NostrPost } from '@/lib/nostr'
 import { getFeaturedTag, isTaggedWith } from '@/lib/tags'
-import { StarIcon, ChevronIcon } from './icons'
+import { LogoMark, StarIcon, ChevronIcon } from './icons'
 
-function monthAbbrev(ts: number) {
-  return new Date(ts * 1000).toLocaleString('en-US', { month: 'short' })
-}
-
-function dayNum(ts: number) {
-  return new Date(ts * 1000).toLocaleString('en-US', { day: '2-digit' })
+function formatDate(ts: number) {
+  return new Date(ts * 1000).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
 }
 
 function readingTime(content: string) {
@@ -33,22 +29,25 @@ export function PostFeed({ posts }: { posts: NostrPost[] }) {
         {posts.map((post) => (
           <li key={post.id}>
             <Link href={`/${post.slug}`} className="group flex items-center gap-5 py-5">
-              <div className="flex h-14 w-14 flex-none flex-col items-center justify-center rounded-md border border-gray-200 text-center">
-                <span className="text-[10px] font-bold uppercase tracking-wide text-accent">
-                  {monthAbbrev(post.publishedAt)}
-                </span>
-                <span className="font-serif text-lg font-bold leading-none">
-                  {dayNum(post.publishedAt)}
-                </span>
+              <div className="h-14 w-14 flex-none overflow-hidden rounded-md border border-gray-200 bg-gray-50">
+                {post.image ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img src={post.image} alt="" className="h-full w-full object-cover" />
+                ) : (
+                  <div className="flex h-full w-full items-center justify-center text-ink/20">
+                    <LogoMark size={24} />
+                  </div>
+                )}
               </div>
 
               <h2 className="flex-1 font-serif text-xl font-bold leading-snug group-hover:text-accent">
                 {post.title}
               </h2>
 
-              <div className="flex flex-none items-center gap-3 text-ink/40">
+              <div className="flex flex-none items-center gap-2 text-xs text-ink/40">
                 {isTaggedWith(post.tags, featuredTag) && <StarIcon />}
-                <span className="hidden text-xs sm:inline">{readingTime(post.content)} min read</span>
+                <span>{formatDate(post.publishedAt)}</span>
+                <span className="hidden sm:inline">· {readingTime(post.content)} min read</span>
                 <ChevronIcon className="transition group-hover:translate-x-0.5 group-hover:text-accent" />
               </div>
             </Link>
